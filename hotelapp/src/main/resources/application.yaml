@@ -12,3 +12,11 @@ spring:
 
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 10
+          order_inserts: true
+          order_updates: true

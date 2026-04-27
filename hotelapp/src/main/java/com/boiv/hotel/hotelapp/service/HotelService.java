@@ -1,6 +1,7 @@
 package com.boiv.hotel.hotelapp.service;
 
 import com.boiv.hotel.hotelapp.exception.CreateHotelException;
+import com.boiv.hotel.hotelapp.exception.HotelNotFoundException;
 import com.boiv.hotel.hotelapp.model.Hotel;
 import com.boiv.hotel.hotelapp.model.hotelDto.CreateHotelRequestDto;
 import com.boiv.hotel.hotelapp.model.hotelDto.HotelShortResponse;
@@ -9,6 +10,8 @@ import com.boiv.hotel.hotelapp.repository.HotelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,5 +28,21 @@ public class HotelService {
         Hotel createdHotel = hotelRepository.save(hotel);
 
         return hotelMapper.toShortDto(createdHotel);
+    }
+
+    @Transactional
+    public void addAmenities(Long hotelId, List<String> amenitiesRequest) {
+        if(amenitiesRequest == null)
+            throw new IllegalArgumentException("Cannot add amenities to the hotel: amenities is null or empty");
+
+        if(amenitiesRequest.isEmpty())
+            return;
+
+        Hotel hotelWithAmenities = hotelRepository.findHotelWithAmenitiesById(hotelId)
+                .orElseThrow(() -> new HotelNotFoundException("Hotel with id [" + hotelId + "] not found"));
+
+        hotelWithAmenities.getAmenities().addAll(amenitiesRequest);
+
+        hotelRepository.save(hotelWithAmenities);
     }
 }
