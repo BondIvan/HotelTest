@@ -1,6 +1,8 @@
 package com.boiv.hotel.hotelapp.model.hotelDto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record ContactDto(
-        String phone,
-        String email
+        @NotBlank String phone,
+        @NotBlank String email
 ) { }
