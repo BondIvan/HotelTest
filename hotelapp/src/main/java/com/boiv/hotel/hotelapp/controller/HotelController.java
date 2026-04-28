@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
+@RequestMapping("/property-view")
 @RequiredArgsConstructor
 public class HotelController {
     private static final Set<String> ALLOWED_SEARCH_PARAMETERS = Set.of("name", "brand", "city", "country", "amenities");

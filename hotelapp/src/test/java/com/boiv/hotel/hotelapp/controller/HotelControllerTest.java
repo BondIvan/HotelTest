@@ -59,7 +59,7 @@ class HotelControllerTest {
         when(hotelService.searchByFilter(filter)).thenReturn(responseList);
 
         // When & Then
-        mockMvc.perform(get("/hotels")
+        mockMvc.perform(get("/property-view/hotels")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
@@ -78,7 +78,7 @@ class HotelControllerTest {
         when(hotelService.searchByFilter(filter)).thenReturn(Collections.emptyList());
 
         // When & Then
-        mockMvc.perform(get("/hotels"))
+        mockMvc.perform(get("/property-view/hotels"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isEmpty());
     }
@@ -105,7 +105,7 @@ class HotelControllerTest {
         when(hotelService.getHotelWithAllInfo(hotelId)).thenReturn(hotelFullResponse);
 
         // When & Then
-        mockMvc.perform(get("/hotels/{id}", hotelId))
+        mockMvc.perform(get("/property-view/hotels/{id}", hotelId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(hotelId))
                 .andExpect(jsonPath("$.name").value("name"))
@@ -126,7 +126,7 @@ class HotelControllerTest {
         when(hotelService.getHotelWithAllInfo(hotelId)).thenThrow(new HotelNotFoundException(errorMessage));
 
         // When & Then
-        mockMvc.perform(get("/hotels/{id}", hotelId))
+        mockMvc.perform(get("/property-view/hotels/{id}", hotelId))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.data").value(errorMessage));
     }
@@ -157,7 +157,7 @@ class HotelControllerTest {
         when(hotelService.create(createHotelRequestDto)).thenReturn(hotelShortResponse);
 
         // When & Then
-        mockMvc.perform(post("/hotels")
+        mockMvc.perform(post("/property-view/hotels")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createHotelRequestDto)))
                 .andExpect(status().isCreated())
@@ -177,7 +177,7 @@ class HotelControllerTest {
         );
 
         // When & Then
-        mockMvc.perform(post("/hotels")
+        mockMvc.perform(post("/property-view/hotels")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidCreateHotelRequestDto)))
                 .andExpect(status().isBadRequest())
@@ -195,7 +195,7 @@ class HotelControllerTest {
         doNothing().when(hotelService).addAmenities(eq(hotelId), anyList());
 
         // When & Then
-        mockMvc.perform(post("/hotels/{id}/amenities", hotelId)
+        mockMvc.perform(post("/property-view/hotels/{id}/amenities", hotelId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(newAmenities)))
                 .andExpect(status().isOk());
@@ -213,7 +213,7 @@ class HotelControllerTest {
         doThrow(new HotelNotFoundException(errorMessage)).when(hotelService).addAmenities(eq(invalidHotelId), anyList());
 
         // When & Then
-        mockMvc.perform(post("/hotels/{id}/amenities", invalidHotelId)
+        mockMvc.perform(post("/property-view/hotels/{id}/amenities", invalidHotelId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(newAmenities)))
                 .andExpect(status().isNotFound())
@@ -232,7 +232,7 @@ class HotelControllerTest {
         doThrow(new HttpMessageNotReadableException(errorMessage)).when(hotelService).addAmenities(eq(hotelId), eq(newAmenities));
 
         // When & Then
-        mockMvc.perform(post("/hotels/{id}/amenities", hotelId)
+        mockMvc.perform(post("/property-view/hotels/{id}/amenities", hotelId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("null")) // null objectMapper.writeValueAsString(newAmenities)
                 .andExpect(status().isBadRequest())
@@ -260,7 +260,7 @@ class HotelControllerTest {
         when(hotelService.searchByFilter(filter)).thenReturn(response);
 
         // When & Then
-        mockMvc.perform(get("/search")
+        mockMvc.perform(get("/property-view/search")
                 .param("name", "name")
                 .param("brand", "brand")
                 .param("city", "city")
@@ -285,7 +285,7 @@ class HotelControllerTest {
         String errorMessage = "Search by parameters " + List.of(invalidParameter) + " are not supported";
 
         // When & Then
-        mockMvc.perform(get("/search")
+        mockMvc.perform(get("/property-view/search")
                         .param("name", "name")
                         .param(invalidParameter, "invalidParameter"))
                 .andExpect(status().isBadRequest())
@@ -306,7 +306,7 @@ class HotelControllerTest {
         when(hotelService.histogramByParameter(histParameter)).thenReturn(expectedData);
 
         // When & Then
-        mockMvc.perform(get("/histogram/{param}", histParameter))
+        mockMvc.perform(get("/property-view/histogram/{param}", histParameter))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.city1").value(3))
                 .andExpect(jsonPath("$.city2").value(5));
@@ -323,7 +323,7 @@ class HotelControllerTest {
         when(hotelService.histogramByParameter(invalidHistParameter)).thenThrow(new IllegalArgumentException(errorMessage));
 
         // When & Then
-        mockMvc.perform(get("/histogram/{param}", invalidHistParameter))
+        mockMvc.perform(get("/property-view/histogram/{param}", invalidHistParameter))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.data").value(errorMessage));
 
