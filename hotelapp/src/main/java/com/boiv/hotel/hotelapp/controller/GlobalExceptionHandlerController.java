@@ -18,6 +18,12 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandlerController {
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDto<String>> handleOtherExceptions(Exception exception) {
+        ErrorResponseDto<String> errorResponse = new ErrorResponseDto<>(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(errorResponse);
+    }
+
     @ExceptionHandler(CreateHotelException.class)
     public ResponseEntity<ErrorResponseDto<String>> handleCreateHotelException(CreateHotelException exception) {
         ErrorResponseDto<String> errorResponse = new ErrorResponseDto<>(exception.getMessage());

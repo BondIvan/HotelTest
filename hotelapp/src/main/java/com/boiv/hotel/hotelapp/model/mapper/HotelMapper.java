@@ -1,16 +1,11 @@
 package com.boiv.hotel.hotelapp.model.mapper;
 
-import com.boiv.hotel.hotelapp.exception.CreateHotelException;
 import com.boiv.hotel.hotelapp.model.Hotel;
 import com.boiv.hotel.hotelapp.model.HotelAddress;
 import com.boiv.hotel.hotelapp.model.HotelArrivalTime;
 import com.boiv.hotel.hotelapp.model.HotelContact;
 import com.boiv.hotel.hotelapp.model.hotelDto.request.CreateHotelRequestDto;
-import com.boiv.hotel.hotelapp.model.hotelDto.response.HotelFullResponse;
-import com.boiv.hotel.hotelapp.model.hotelDto.response.HotelShortResponse;
-import com.boiv.hotel.hotelapp.model.hotelDto.response.AddressResponseDto;
-import com.boiv.hotel.hotelapp.model.hotelDto.response.ArrivalTimeResponseDto;
-import com.boiv.hotel.hotelapp.model.hotelDto.response.ContactResponseDto;
+import com.boiv.hotel.hotelapp.model.hotelDto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -38,12 +33,6 @@ public class HotelMapper {
     }
 
     public HotelShortResponse toShortDto(Hotel hotel) {
-        if(hotel.getAddress() == null)
-            throw new CreateHotelException("Cannot create hotel: hotelAddress is null");
-
-        if(hotel.getContacts() == null)
-            throw new CreateHotelException("Cannot create hotel: hotelContact is null");
-
         HotelContact hotelContact = hotel.getContacts();
         HotelAddress hotelAddress = hotel.getAddress();
         String address = String.format("%d %s, %s, %s, %s",

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @Embeddable
@@ -27,4 +29,20 @@ public class HotelAddress {
 
     @Column(name = "post_code", nullable = false)
     private String postCode;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        HotelAddress that = (HotelAddress) o;
+        return Objects.equals(houseNumber, that.houseNumber)
+                && Objects.equals(street, that.street)
+                && Objects.equals(city, that.city)
+                && Objects.equals(country, that.country)
+                && Objects.equals(postCode, that.postCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(houseNumber, street, city, country, postCode);
+    }
 }
