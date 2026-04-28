@@ -21,6 +21,13 @@ public class HotelController {
 
     private final HotelService hotelService;
 
+    @GetMapping("/hotels")
+    public ResponseEntity<List<HotelShortResponse>> getAllHotelShortInfo() {
+        SearchHotelFilter filter = new SearchHotelFilter(null, null, null, null, null);
+        List<HotelShortResponse> response = hotelService.searchByFilter(filter);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/hotels")
     public ResponseEntity<HotelShortResponse> createNewHotel(@RequestBody @Valid CreateHotelRequestDto createHotelRequestDto) {
         HotelShortResponse response = hotelService.create(createHotelRequestDto);
