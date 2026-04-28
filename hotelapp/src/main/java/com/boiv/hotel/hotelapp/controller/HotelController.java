@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
 public class HotelController {
+    private static final Set<String> ALLOWED_SEARCH_PARAMETERS = Set.of("name", "brand", "city", "country", "amenities");
+
     private final HotelService hotelService;
 
     @PostMapping("/hotels")
@@ -38,8 +41,14 @@ public class HotelController {
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String country,
-            @RequestParam(required = false) List<String> amenities
+            @RequestParam(required = false) List<String> amenities,
+            @RequestParam Map<String, String> allParams
     ) {
+        Set<String> params = allParams.keySet();
+        params.removeIf(ALLOWED_SEARCH_PARAMETERS::contains);
+        if(!params.isEmpty())
+            throw new IllegalArgumentException("Search by parameters " + params + " are not supported");
+
         SearchHotelFilter filter = new SearchHotelFilter(name, brand, city, country, amenities);
         List<HotelShortResponse> response = hotelService.searchByFilter(filter);
         return ResponseEntity.ok(response);
