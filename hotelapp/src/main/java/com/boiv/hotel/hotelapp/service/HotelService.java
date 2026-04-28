@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,5 +57,21 @@ public class HotelService {
         return searchedHotels.stream()
                 .map(hotelMapper::toShortDto)
                 .toList();
+    }
+
+    public Map<String, Long> histogramByParameter(String histParameter) {
+        List<Object[]> countByHistParameter = switch (histParameter.toLowerCase()) {
+            case "brand" -> hotelRepository.countByBrand();
+            case "city" -> hotelRepository.countByCity();
+            case "country" -> hotelRepository.countByCountry();
+            case "amenities" -> hotelRepository.countByAmenities();
+            default -> throw new IllegalArgumentException("Histogram by parameter [" + histParameter + "] is not supported");
+        };
+
+        return countByHistParameter.stream()
+                .collect(Collectors.toMap(
+                        item -> (String) item[0],
+                        item -> (Long) item[1]
+                ));
     }
 }

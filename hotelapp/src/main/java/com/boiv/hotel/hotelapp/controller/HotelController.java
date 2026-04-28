@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,6 +42,12 @@ public class HotelController {
     ) {
         SearchHotelFilter filter = new SearchHotelFilter(name, brand, city, country, amenities);
         List<HotelShortResponse> response = hotelService.searchByFilter(filter);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/histogram/{param}")
+    public ResponseEntity<Map<String, Long>> histogram(@PathVariable("param") String histParameter) {
+        Map<String, Long> response = hotelService.histogramByParameter(histParameter);
         return ResponseEntity.ok(response);
     }
 }
