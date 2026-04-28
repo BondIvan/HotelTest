@@ -5,9 +5,11 @@ import com.boiv.hotel.hotelapp.exception.HotelNotFoundException;
 import com.boiv.hotel.hotelapp.model.Hotel;
 import com.boiv.hotel.hotelapp.model.hotelDto.CreateHotelRequestDto;
 import com.boiv.hotel.hotelapp.model.hotelDto.HotelShortResponse;
+import com.boiv.hotel.hotelapp.model.hotelDto.SearchHotelFilter;
 import com.boiv.hotel.hotelapp.model.mapper.HotelMapper;
 import com.boiv.hotel.hotelapp.repository.HotelRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,5 +46,14 @@ public class HotelService {
         hotelWithAmenities.getAmenities().addAll(amenitiesRequest);
 
         hotelRepository.save(hotelWithAmenities);
+    }
+
+    public List<HotelShortResponse> searchByFilter(SearchHotelFilter filter) {
+        Specification<Hotel> hotelSpecification = HotelSpecification.build(filter);
+        List<Hotel> searchedHotels = hotelRepository.findAll(hotelSpecification);
+
+        return searchedHotels.stream()
+                .map(hotelMapper::toShortDto)
+                .toList();
     }
 }

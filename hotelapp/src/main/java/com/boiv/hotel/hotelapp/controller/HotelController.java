@@ -2,15 +2,13 @@ package com.boiv.hotel.hotelapp.controller;
 
 import com.boiv.hotel.hotelapp.model.hotelDto.CreateHotelRequestDto;
 import com.boiv.hotel.hotelapp.model.hotelDto.HotelShortResponse;
+import com.boiv.hotel.hotelapp.model.hotelDto.SearchHotelFilter;
 import com.boiv.hotel.hotelapp.service.HotelService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +29,18 @@ public class HotelController {
             @RequestBody List<String> amenitiesRequest) {
         hotelService.addAmenities(hotelId, amenitiesRequest);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<HotelShortResponse>> search(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) List<String> amenities
+    ) {
+        SearchHotelFilter filter = new SearchHotelFilter(name, brand, city, country, amenities);
+        List<HotelShortResponse> response = hotelService.searchByFilter(filter);
+        return ResponseEntity.ok(response);
     }
 }
