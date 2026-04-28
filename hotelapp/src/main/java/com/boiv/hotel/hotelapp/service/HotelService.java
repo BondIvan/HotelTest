@@ -68,6 +68,9 @@ public class HotelService {
     }
 
     public Map<String, Long> histogramByParameter(String histParameter) {
+        if(histParameter == null)
+            throw new IllegalArgumentException("Cannot create histogram: histParameter is null");
+
         List<Object[]> countByHistParameter = switch (histParameter.toLowerCase()) {
             case "brand" -> hotelRepository.countByBrand();
             case "city" -> hotelRepository.countByCity();
