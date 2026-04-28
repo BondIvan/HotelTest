@@ -1,16 +1,16 @@
 package com.boiv.hotel.hotelapp.model.mapper;
 
 import com.boiv.hotel.hotelapp.model.HotelContact;
-import com.boiv.hotel.hotelapp.model.hotelDto.ContactDto;
+import com.boiv.hotel.hotelapp.model.hotelDto.request.ContactRequestDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ContactMapper {
 
-    public HotelContact fromDto(ContactDto contactDto) {
+    public HotelContact fromDto(ContactRequestDto contactRequestDto) {
         return new HotelContact(
-                contactDto.phone(),
-                contactDto.email()
+                contactRequestDto.phone(),
+                contactRequestDto.email()
         );
     }
 }

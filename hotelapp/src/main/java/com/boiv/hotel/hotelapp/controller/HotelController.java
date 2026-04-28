@@ -1,8 +1,8 @@
 package com.boiv.hotel.hotelapp.controller;
 
-import com.boiv.hotel.hotelapp.model.hotelDto.CreateHotelRequestDto;
-import com.boiv.hotel.hotelapp.model.hotelDto.HotelFullResponse;
-import com.boiv.hotel.hotelapp.model.hotelDto.HotelShortResponse;
+import com.boiv.hotel.hotelapp.model.hotelDto.request.CreateHotelRequestDto;
+import com.boiv.hotel.hotelapp.model.hotelDto.response.HotelFullResponse;
+import com.boiv.hotel.hotelapp.model.hotelDto.response.HotelShortResponse;
 import com.boiv.hotel.hotelapp.model.hotelDto.SearchHotelFilter;
 import com.boiv.hotel.hotelapp.service.HotelService;
 import jakarta.validation.Valid;
@@ -23,7 +23,7 @@ public class HotelController {
     private final HotelService hotelService;
 
     @GetMapping("/hotels")
-    public ResponseEntity<List<HotelShortResponse>> getAllHotelShortInfo() {
+    public ResponseEntity<List<HotelShortResponse>> getAllHotelsShortInfo() {
         SearchHotelFilter filter = new SearchHotelFilter(null, null, null, null, null);
         List<HotelShortResponse> response = hotelService.searchByFilter(filter);
         return ResponseEntity.ok(response);

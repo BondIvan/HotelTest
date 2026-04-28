@@ -1,8 +1,4 @@
-package com.boiv.hotel.hotelapp.model.hotelDto;
-
-import com.boiv.hotel.hotelapp.model.hotelDto.response.AddressResponseDto;
-import com.boiv.hotel.hotelapp.model.hotelDto.response.ArrivalTimeResponseDto;
-import com.boiv.hotel.hotelapp.model.hotelDto.response.ContactResponseDto;
+package com.boiv.hotel.hotelapp.model.hotelDto.response;
 
 import java.util.Set;
 

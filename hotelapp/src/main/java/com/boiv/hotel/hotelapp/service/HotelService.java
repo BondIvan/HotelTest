@@ -3,9 +3,9 @@ package com.boiv.hotel.hotelapp.service;
 import com.boiv.hotel.hotelapp.exception.CreateHotelException;
 import com.boiv.hotel.hotelapp.exception.HotelNotFoundException;
 import com.boiv.hotel.hotelapp.model.Hotel;
-import com.boiv.hotel.hotelapp.model.hotelDto.CreateHotelRequestDto;
-import com.boiv.hotel.hotelapp.model.hotelDto.HotelFullResponse;
-import com.boiv.hotel.hotelapp.model.hotelDto.HotelShortResponse;
+import com.boiv.hotel.hotelapp.model.hotelDto.request.CreateHotelRequestDto;
+import com.boiv.hotel.hotelapp.model.hotelDto.response.HotelFullResponse;
+import com.boiv.hotel.hotelapp.model.hotelDto.response.HotelShortResponse;
 import com.boiv.hotel.hotelapp.model.hotelDto.SearchHotelFilter;
 import com.boiv.hotel.hotelapp.model.mapper.HotelMapper;
 import com.boiv.hotel.hotelapp.repository.HotelRepository;
@@ -45,7 +45,7 @@ public class HotelService {
     @Transactional
     public void addAmenities(Long hotelId, List<String> amenitiesRequest) {
         if(amenitiesRequest == null)
-            throw new IllegalArgumentException("Cannot add amenities to the hotel: amenities is null or empty");
+            throw new IllegalArgumentException("Cannot add amenities to the hotel: input amenities is null");
 
         if(amenitiesRequest.isEmpty())
             return;
