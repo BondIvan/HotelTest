@@ -3,9 +3,14 @@ package com.boiv.hotel.hotelapp.model.mapper;
 import com.boiv.hotel.hotelapp.exception.CreateHotelException;
 import com.boiv.hotel.hotelapp.model.Hotel;
 import com.boiv.hotel.hotelapp.model.HotelAddress;
+import com.boiv.hotel.hotelapp.model.HotelArrivalTime;
 import com.boiv.hotel.hotelapp.model.HotelContact;
 import com.boiv.hotel.hotelapp.model.hotelDto.CreateHotelRequestDto;
+import com.boiv.hotel.hotelapp.model.hotelDto.HotelFullResponse;
 import com.boiv.hotel.hotelapp.model.hotelDto.HotelShortResponse;
+import com.boiv.hotel.hotelapp.model.hotelDto.response.AddressResponseDto;
+import com.boiv.hotel.hotelapp.model.hotelDto.response.ArrivalTimeResponseDto;
+import com.boiv.hotel.hotelapp.model.hotelDto.response.ContactResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -51,6 +56,41 @@ public class HotelMapper {
                 hotel.getDescription(),
                 address,
                 hotelContact.getPhone()
+        );
+    }
+
+    public HotelFullResponse toFullDto(Hotel hotel) {
+        HotelAddress hotelAddress = hotel.getAddress();
+        HotelContact hotelContact = hotel.getContacts();
+        HotelArrivalTime hotelArrivalTime = hotel.getArrivalTime();
+
+        AddressResponseDto addressResponseDto = new AddressResponseDto(
+                hotelAddress.getHouseNumber(),
+                hotelAddress.getStreet(),
+                hotelAddress.getCity(),
+                hotelAddress.getCountry(),
+                hotelAddress.getPostCode()
+        );
+
+        ContactResponseDto contactResponseDto = new ContactResponseDto(
+                hotelContact.getPhone(),
+                hotelContact.getEmail()
+        );
+
+        ArrivalTimeResponseDto arrivalTimeResponseDto = new ArrivalTimeResponseDto(
+                hotelArrivalTime.getCheckIn(),
+                hotelArrivalTime.getCheckOut()
+        );
+
+        return new HotelFullResponse(
+                hotel.getId(),
+                hotel.getName(),
+                hotel.getDescription(),
+                hotel.getBrand(),
+                addressResponseDto,
+                contactResponseDto,
+                arrivalTimeResponseDto,
+                hotel.getAmenities()
         );
     }
 }

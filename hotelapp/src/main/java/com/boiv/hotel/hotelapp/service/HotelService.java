@@ -4,6 +4,7 @@ import com.boiv.hotel.hotelapp.exception.CreateHotelException;
 import com.boiv.hotel.hotelapp.exception.HotelNotFoundException;
 import com.boiv.hotel.hotelapp.model.Hotel;
 import com.boiv.hotel.hotelapp.model.hotelDto.CreateHotelRequestDto;
+import com.boiv.hotel.hotelapp.model.hotelDto.HotelFullResponse;
 import com.boiv.hotel.hotelapp.model.hotelDto.HotelShortResponse;
 import com.boiv.hotel.hotelapp.model.hotelDto.SearchHotelFilter;
 import com.boiv.hotel.hotelapp.model.mapper.HotelMapper;
@@ -22,6 +23,13 @@ import java.util.stream.Collectors;
 public class HotelService {
     private final HotelMapper hotelMapper;
     private final HotelRepository hotelRepository;
+
+    public HotelFullResponse getHotelWithAllInfo(Long hotelId) {
+        Hotel hotel = hotelRepository.findHotelWithAmenitiesById(hotelId)
+                .orElseThrow(() -> new HotelNotFoundException("Hotel with id [" + hotelId + "] not found"));
+
+        return hotelMapper.toFullDto(hotel);
+    }
 
     @Transactional
     public HotelShortResponse create(CreateHotelRequestDto createHotelRequestDto) {

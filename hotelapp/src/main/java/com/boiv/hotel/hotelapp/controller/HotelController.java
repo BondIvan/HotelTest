@@ -1,6 +1,7 @@
 package com.boiv.hotel.hotelapp.controller;
 
 import com.boiv.hotel.hotelapp.model.hotelDto.CreateHotelRequestDto;
+import com.boiv.hotel.hotelapp.model.hotelDto.HotelFullResponse;
 import com.boiv.hotel.hotelapp.model.hotelDto.HotelShortResponse;
 import com.boiv.hotel.hotelapp.model.hotelDto.SearchHotelFilter;
 import com.boiv.hotel.hotelapp.service.HotelService;
@@ -25,6 +26,12 @@ public class HotelController {
     public ResponseEntity<List<HotelShortResponse>> getAllHotelShortInfo() {
         SearchHotelFilter filter = new SearchHotelFilter(null, null, null, null, null);
         List<HotelShortResponse> response = hotelService.searchByFilter(filter);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/hotels/{id}")
+    public ResponseEntity<HotelFullResponse> getHotelFullInfo(@PathVariable("id") Long hotelId) {
+        HotelFullResponse response = hotelService.getHotelWithAllInfo(hotelId);
         return ResponseEntity.ok(response);
     }
 
